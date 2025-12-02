@@ -410,6 +410,26 @@ Feature: Admin Actions to Manage Invitations
     When I follow "default@email.com"
     Then I should see "All or part of an email address"
       And I should see "default@email.com" within "table"
+  
+  Scenario: Sent to field shows the invitee email for redeemed invitations
+    Given the user "creator" exists and is activated
+      And the user "invitee" exists and is activated
+      And an invitation created by "creator" and used by "invitee"
+      And I am logged in as a super admin
+    When I go to creator's manage invitations page
+      And I follow the first invitation token url
+    Then I should see "Sent to"
+      And I should see "default@email.com"
+
+  Scenario: Sent to email link takes admin to the invitation search page
+    Given the user "creator" exists and is activated
+      And the user "invitee" exists and is activated
+      And an invitation created by "creator" and used by "invitee"
+      And I am logged in as a super admin
+    When I go to creator's manage invitations page
+      And I follow the first invitation token url
+      And I follow "default@email.com"
+    Then I should see "All or part of an email address"
 
   Scenario: An admin can search the invitation queue, and search parameters are
   kept even if deleting without JavaScript
